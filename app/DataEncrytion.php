@@ -1,7 +1,7 @@
 <?php
 namespace App;
 
-class DataEncrytion
+class DataEncrytion implements Interfaces\DataEncryption
 {
 	/**
 	 * @var string   Raw data
@@ -13,39 +13,28 @@ class DataEncrytion
 	 */
 	private $encryptedData;
 
-	/**
-	 * Set raw data
-	 *
-	 * @param string $data   Raw data
-	 *
-	 * @return void
-	 */
+    /**
+     * {@inheritDoc}
+     * @see \App\Interfaces\DataEncryption::setRawData()
+     */
 	public function setRawData($data)
 	{
 		$this->rawData = $data;
-
-		return;
 	}
 
-	/**
-	 * Set encrypted data
-	 *
-	 * @param string $data   Encrypted string
-	 *
-	 * @return void
-	 */
+    /**
+     * {@inheritDoc}
+     * @see \App\Interfaces\DataEncryption::setEncryptedData()
+     */
 	public function setEncryptedData($data)
 	{
 		$this->encryptedData = $data;
-
-		return;
 	}
 
-	/**
-	 * Calculate encrypted data length from the raw data
-	 *
-	 * @return integer
-	 */
+    /**
+     * {@inheritDoc}
+     * @see \App\Interfaces\DataEncryption::getLength()
+     */
 	public function getLength()
 	{
 		if (!$this->rawData) {
@@ -61,32 +50,10 @@ class DataEncrytion
 		return $x;
 	}
 
-	/**
-	 * Calculate max raw data size when outbut size is limited
-	 *
-	 * @param integer $inBytes
-	 *
-	 * @return integer
-	 */
-	public static function calculateMaxLength($inBytes)
-	{
-		$x = floor($inBytes * 6 / 8);
-		$x = $x - 16 - 32;
-
-		if ($x < 0) {
-			$x = 0;
-		}
-
-		return $x;
-	}
-
-	/**
-	 * Encrypt method
-	 *
-	 * @param string $password   Password
-	 *
-	 * @return string   Coded string
-	 */
+    /**
+     * {@inheritDoc}
+     * @see \App\Interfaces\DataEncryption::encrypt()
+     */
 	public function encrypt($password = '')
 	{
 		$ivlen   = openssl_cipher_iv_length($cipher = 'AES-128-CBC');
@@ -100,15 +67,16 @@ class DataEncrytion
 		return $this->encryptedData;
 	}
 
-	/**
-	 * Decrypt method
-	 *
-	 * @param string $password   Password
-	 *
-	 * @return boolean|string
-	 */
+    /**
+     * {@inheritDoc}
+     * @see \App\Interfaces\DataEncryption::decrypt()
+     */
 	public function decrypt($password = '')
 	{
+	    if (empty($this->encryptedData)) {
+	        return false;
+        }
+
 		$c = base64_decode($this->encryptedData);
 
 		$ivlen   = openssl_cipher_iv_length($cipher = 'AES-128-CBC');
@@ -126,4 +94,23 @@ class DataEncrytion
 
 		return $this->rawData;
 	}
+
+    /**
+     * Calculate max raw data size when outbut size is limited
+     *
+     * @param integer $inBytes
+     *
+     * @return integer
+     */
+    public static function calculateMaxLength($inBytes)
+    {
+        $x = floor($inBytes * 6 / 8);
+        $x = $x - 16 - 32;
+
+        if ($x < 0) {
+            $x = 0;
+        }
+
+        return $x;
+    }
 }
