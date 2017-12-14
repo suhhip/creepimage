@@ -82,8 +82,6 @@ class AjaxController extends Controller
 			'success'	=> true,
 			'image'     => base64_encode($outputBuffer)
 		]);
-
-		return;
 	}
 
 	public function decreeptionMethod(Request $request)
