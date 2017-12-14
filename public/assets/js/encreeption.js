@@ -73,7 +73,13 @@ var encreeption = {
       var element = document.createElement('a');
       element.setAttribute('href', 'data:image/png;base64,' + response.image);
       element.setAttribute('download', 'creepimage_' + Date.now() + '.png');
+      element.style.display = 'none';
+
+      document.body.appendChild(element);
+
       element.click();
+
+      document.body.removeChild(element);
     });
   },
 
