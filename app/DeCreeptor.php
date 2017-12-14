@@ -3,7 +3,17 @@ namespace App;
 
 class DeCreeptor extends CreepImage
 {
-	/**
+    /**
+     * @var /App/ByteFunctions   ByteFunctions object
+     */
+    private $byteFunctions;
+
+    public function __construct(ByteFunctions $bf)
+    {
+        $this->byteFunctions = $bf;
+    }
+
+    /**
 	 * Run DeCreepter
 	 *
 	 * @return string|boolean
@@ -21,7 +31,7 @@ class DeCreeptor extends CreepImage
 			$decimals[] = $this->readDecimal();
 		}
 
-		$str = ByteFunctions::decimalToString($decimals);
+		$str = $this->byteFunctions->decimalToString($decimals);
 
 		return $str;
 	}
@@ -37,7 +47,7 @@ class DeCreeptor extends CreepImage
 	{
 		$binary = $this->readBinary($pixelCount);
 
-		$dec = ByteFunctions::binaryToDecimal($binary);
+		$dec = $this->byteFunctions->binaryToDecimal($binary);
 
 		return $dec;
 	}

@@ -11,7 +11,7 @@ class ByteFunctions
 	 *
 	 * @return array
 	 */
-	public static function decimalToBinary($number, $length = 8)
+	public function decimalToBinary($number, $length = 8)
 	{
 		$binary = sprintf('%0' . $length . 'd', decbin($number));
 		$binary = str_split($binary);
@@ -26,7 +26,7 @@ class ByteFunctions
 	 *
 	 * @return number
 	 */
-	public static function binaryToDecimal(array $binary)
+	public function binaryToDecimal(array $binary)
 	{
 		$binary = implode('', $binary);
 
@@ -40,7 +40,7 @@ class ByteFunctions
 	 *
 	 * @return array
 	 */
-	public static function stringToDecimal($str)
+	public function stringToDecimal($str)
 	{
 		$output = [];
 
@@ -59,7 +59,7 @@ class ByteFunctions
 	 *
 	 * @return string
 	 */
-	public static function decimalToString(array $decArray)
+	public function decimalToString(array $decArray)
 	{
 		$output = [];
 

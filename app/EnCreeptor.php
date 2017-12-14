@@ -1,7 +1,18 @@
 <?php
 namespace App;
 
-class EnCreeptor extends CreepImage {
+class EnCreeptor extends CreepImage
+{
+    /**
+     * @var /App/ByteFunctions   ByteFunctions object
+     */
+    private $byteFunctions;
+
+    public function __construct(ByteFunctions $bf)
+    {
+        $this->byteFunctions = $bf;
+    }
+
 	/**
 	 * @var integer   Max byte length
 	 */
@@ -39,7 +50,7 @@ class EnCreeptor extends CreepImage {
 	 */
 	public function loadData($data)
 	{
-		$bytes   = ByteFunctions::stringToDecimal($data);
+		$bytes   = $this->byteFunctions->stringToDecimal($data);
 		$size    = count($bytes);
 
 		if ($size > $this->maxSize) {
@@ -62,12 +73,12 @@ class EnCreeptor extends CreepImage {
 		$this->normalizeBytePixels(self::PIXELDIFF);
 
 		// Draw size pixels
-		$binary = self::splitToPixels($this->dataSize, self::PIXELS_FOR_SIZE);
+		$binary = $this->splitToPixels($this->dataSize, self::PIXELS_FOR_SIZE);
 		$this->drawBinaryGroup($binary);
 
 		// Draw data
 		foreach ($this->dataBytes as $bK => $byte) {
-			$binary = self::splitToPixels($byte);
+			$binary = $this->splitToPixels($byte);
 			$this->drawBinaryGroup($binary);
 		}
 
@@ -99,8 +110,6 @@ class EnCreeptor extends CreepImage {
 				$colors = $this->getActualPixel();
 			}
 
-			$origColors = $colors;
-
 			foreach ($values as $colorIndex => $value) {
 				if (!$value) {
 					continue;
@@ -122,9 +131,9 @@ class EnCreeptor extends CreepImage {
 	 *
 	 * @return array[]
 	 */
-	private static function splitToPixels($integer, $pixels = 3)
+	private function splitToPixels($integer, $pixels = 3)
 	{
-		$binary = ByteFunctions::decimalToBinary($integer, $pixels * 3 - 1);
+		$binary = $this->byteFunctions->decimalToBinary($integer, $pixels * 3 - 1);
 
 		$pixelIndex = 0;
 		$colorIndex = 1;
@@ -206,8 +215,6 @@ class EnCreeptor extends CreepImage {
 	 */
 	private function normalizeBytePixelGroup($pixels)
 	{
-		$level = self::PIXELDIFF;
-
 		$pixelColors = [];
 		foreach ($pixels as $pixel) {
 			$pixelColors[] = $this->image->colorAt($pixel[0], $pixel[1]);

@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 
 use App\BaseImage;
+use App\ByteFunctions;
 use App\CreepImage;
 use App\DataEncrytion;
 use App\DeCreeptor;
@@ -55,7 +56,9 @@ class AjaxController extends Controller
 			$image = new BaseImage();
 			$image->loadFile($imageFile);
 
-			$enCreeptor = new EnCreeptor();
+            $byteFunctions = new ByteFunctions();
+
+			$enCreeptor = new EnCreeptor($byteFunctions);
 			$enCreeptor->loadImage($image);
 
 			if (!$enCreeptor->loadData($data)) {
@@ -98,7 +101,9 @@ class AjaxController extends Controller
 				throw new \Exception('Invalid image file');
 			}
 
-			$deCreeptor = new DeCreeptor();
+			$byteFunctions = new ByteFunctions();
+
+			$deCreeptor = new DeCreeptor($byteFunctions);
 			$deCreeptor->loadImage($image);
 			$data = $deCreeptor->run();
 
