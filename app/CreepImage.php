@@ -102,4 +102,27 @@ class CreepImage
 	{
 		return pow(2, self::PIXELS_FOR_SIZE * 3 - 1) - 1;
 	}
+
+    /**
+     * Calculate max bytes
+     *
+     * @param integer $imageWidth    Image width
+     * @param integer $imageHeight   Image height
+     *
+     * @return integer
+     */
+	public static function getAvailableBytes($imageWidth, $imageHeight)
+    {
+        $imageWidth    = (int)$imageWidth;
+        $imageHeight   = (int)$imageHeight;
+
+        if ($imageWidth <= 0 || $imageHeight <= 0) {
+            return 0;
+        }
+
+        $availablePixels   = $imageWidth * $imageHeight - self::PIXELS_FOR_SIZE;
+        $availableBytes    = floor($availablePixels / 3);
+
+        return $availableBytes;
+    }
 }

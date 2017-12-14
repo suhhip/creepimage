@@ -13,7 +13,7 @@ class AjaxController extends Controller
 {
 	public function imageInfo(Request $request)
 	{
-		$validatedData = $this->validate($request, [
+		$this->validate($request, [
 			'image' => 'required|image|Mimes:jpg,jpeg,png|max:2000kb',
 		]);
 
@@ -22,10 +22,8 @@ class AjaxController extends Controller
 		$image = new BaseImage();
 		$image->loadFile($imageFile);
 
-		$availablePixels   = $image->getWidth() * $image->getHeight() - CreepImage::PIXELS_FOR_SIZE;
-		$availableBytes    = floor($availablePixels / 3);
-
-		$systemMaxLength = CreepImage::getSystemMaxSize();
+		$availableBytes    = CreepImage::getAvailableBytes($image->getWidth(), $image->getHeight());
+		$systemMaxLength   = CreepImage::getSystemMaxSize();
 		if ($availableBytes > $systemMaxLength) {
 			$availableBytes = $systemMaxLength;
 		}
@@ -47,7 +45,7 @@ class AjaxController extends Controller
 
 		$imageFile   = $request->file('image')->getPathName();
 		$password    = $request->get('password');
-		$message	     = $request->get('message');
+		$message     = $request->get('message');
 
 		$encryptor = new DataEncrytion();
 		$encryptor->setRawData($message);
@@ -74,7 +72,7 @@ class AjaxController extends Controller
 		}
 
 		ob_start();
-			imagepng($image->getImage());
+		imagepng($image->getImage());
 		$outputBuffer = ob_get_clean();
 
 		return response()->json([
@@ -87,7 +85,7 @@ class AjaxController extends Controller
 
 	public function decreeptionMethod(Request $request)
 	{
-		$validatedData = $this->validate($request, [
+		$this->validate($request, [
 			'image' => 'required|image|Mimes:png|max:2000kb',
 		]);
 
