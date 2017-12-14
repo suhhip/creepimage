@@ -72,7 +72,7 @@ class CreepImage
 	protected function stepPixel()
 	{
 		++$this->posX;
-		if ($this->posX >= $this->image->width) {
+		if ($this->posX >= $this->image->getWidth()) {
 			$this->posX = 0;
 			++$this->posY;
 		}

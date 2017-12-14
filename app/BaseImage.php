@@ -1,7 +1,7 @@
 <?php
 namespace App;
 
-class BaseImage
+class BaseImage implements Interfaces\BaseImage
 {
 	private $filePath;
 	private $image;
@@ -9,20 +9,17 @@ class BaseImage
 	/**
 	 * @var integer   Width of image
 	 */
-	public $width;
+	private $width;
 
 	/**
 	 * @var integer   Height of image
 	 */
-	public $height;
+	private $height;
 
-	/**
-	 * Load image file
-	 *
-	 * @param string $filePath   Image file path
-	 *
-	 * @return boolean
-	 */
+    /**
+     * {@inheritDoc}
+     * @see \App\Interfaces\BaseImage::loadFile()
+     */
 	public function loadFile($filePath)
 	{
 		$this->filePath = $filePath;
@@ -47,21 +44,37 @@ class BaseImage
 		return ($this->width && $this->height);
 	}
 
-	/**
-	 * Get image
-	 *
-	 * @return resource
-	 */
-	public function getImage()
-	{
-		return $this->image;
-	}
+    /**
+     * {@inheritDoc}
+     * @see \App\Interfaces\BaseImage::getImage()
+     */
+    public function getImage()
+    {
+        return $this->image;
+    }
 
-	/**
-	 * Get image mime type
-	 *
-	 * @return string
-	 */
+    /**
+     * {@inheritDoc}
+     * @see \App\Interfaces\BaseImage::getWidth()
+     */
+    public function getWidth()
+    {
+        return $this->width;
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see \App\Interfaces\BaseImage::getHeight()
+     */
+    public function getHeight()
+    {
+        return $this->height;
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see \App\Interfaces\BaseImage::getMimeType()
+     */
 	public function getMimeType()
 	{
 		return image_type_to_mime_type(
@@ -69,15 +82,10 @@ class BaseImage
 		);
 	}
 
-	/**
-	 * Change pixel color
-	 *
-	 * @param integer $x       X-coordinate
-	 * @param integer $y       Y-coordinate
-	 * @param array   $color   RGB array
-	 *
-	 * @return boolean
-	 */
+    /**
+     * {@inheritDoc}
+     * @see \App\Interfaces\BaseImage::setPixelColor()
+     */
 	public function setPixelColor($x, $y, array $color)
 	{
 		if (!$this->validateCoordinates($x, $y)) {
@@ -91,14 +99,10 @@ class BaseImage
 		return true;
 	}
 
-	/**
-	 * Get pixel color
-	 *
-	 * @param integer $x   X-coordinate
-	 * @param integer $y   Y-coordinate
-	 *
-	 * @return array   RGB array
-	 */
+    /**
+     * {@inheritDoc}
+     * @see \App\Interfaces\BaseImage::colorAt()
+     */
 	public function colorAt($x, $y)
 	{
 		if (!self::validateCoordinates($x, $y)) {

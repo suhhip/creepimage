@@ -255,7 +255,7 @@ class EnCreeptor extends CreepImage {
 	{
 		$maxSize = self::getSystemMaxSize();
 
-		$imageMaxSize = floor(($this->image->width * $this->image->height - self::PIXELS_FOR_SIZE) / 3);
+		$imageMaxSize = floor(($this->image->getWidth() * $this->image->getHeight() - self::PIXELS_FOR_SIZE) / 3);
 		if ($imageMaxSize < $this->maxSize) {
 			$maxSize = $imageMaxSize;
 		}

@@ -22,7 +22,7 @@ class AjaxController extends Controller
 		$image = new BaseImage();
 		$image->loadFile($imageFile);
 
-		$availablePixels   = $image->width * $image->height - CreepImage::PIXELS_FOR_SIZE;
+		$availablePixels   = $image->getWidth() * $image->getHeight() - CreepImage::PIXELS_FOR_SIZE;
 		$availableBytes    = floor($availablePixels / 3);
 
 		$systemMaxLength = CreepImage::getSystemMaxSize();
